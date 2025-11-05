@@ -24,7 +24,7 @@ const Summarizer = () => {
           return;
       }
       else{
-          const response = await axios.get('http://localhost:3000/middleware/loginornot', {
+          const response = await axios.get('http://localhost:3000/api/middleware/loginornot', {
         withCredentials: true,
         headers: {
         Authorization: `Bearer ${token}`,
@@ -38,14 +38,14 @@ const Summarizer = () => {
       }
     
     } catch (error) {
-      console.error('Authentication error:', error);
+        setIslogin('Authinticstion error');
      }
   }
 
    const logout= async(e)=>{
     e.preventDefault();
     try{
-      await axios.get('http://localhost:3000/user/logout',{
+      await axios.get('http://localhost:3000/api/user/logout',{
         withCredentials:true,
         headers:{ 
           'Accept':'application/json',
@@ -57,8 +57,7 @@ const Summarizer = () => {
       window.location.href='/'; 
     }
     catch(err){
-      console.log("Logout error:",err);
-    }
+    setIslogout('error while logouting');    }
   }
 
   

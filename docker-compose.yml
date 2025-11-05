@@ -1,0 +1,56 @@
+version: "3.8"
+
+services:
+  frontend:
+    build: ./frontend
+    container_name: frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    networks:
+      - app-network
+
+  backend:
+    build: ./backend
+    container_name: backend
+    command: npx nodemon server.js    # Auto-restart on file changes
+    env_file:
+      - ./.env  
+    volumes:
+      - ./backend:/app                # Sync local backend folder
+      - /app/node_modules             # Keep container dependencies separate
+    environment:
+      - NODE_ENV=development
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mongo
+      - redis
+    networks:
+      - app-network
+
+  mongo:
+    image: mongo
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo-data:/data/db           # Persistent MongoDB data
+    networks:
+      - app-network
+
+  redis:
+    image: redis:alpine
+    container_name: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - app-network
+
+volumes:
+  mongo-data:                         #  Define named volume for MongoDB
+
+networks:
+  app-network:
+    driver: bridge

@@ -43,7 +43,7 @@ const SignupPage = () => {
 
     // Simulate signup API call
      try{
-      let response = await axios.post('http://localhost:3000/user/signup',{
+      let response = await axios.post('http://localhost:3000/api/user/signup',{
         name: form.name,
         email: form.email,
         password: form.password
@@ -61,8 +61,7 @@ const SignupPage = () => {
      }
      catch(err){
         setError('Server error. Please try again later.');
-        console.log("signup error:",err);
-        setLoading(false);
+         setLoading(false);
      }
   };
 

@@ -11,16 +11,17 @@ export default function Summarizer() {
   const [showHistory, setShowHistory] = useState(false);
   const [isNavOpen, setIsNavOpen] = useState(false); // State for mobile nav toggle
   const [islogin,setIslogin]=useState('');
+  const [error,setError]=useState('')
   
  
    const handleTryNowClick = async(e)=> {
       try {
-        await axios.get('http://localhost:3000/middleware/loginornot', {
+        await axios.get('http://localhost:3000/api/middleware/loginornot', {
         withCredentials: true})
         .then(()=>{})
         .catch((err)=>{window.location.href='/login'})
       } catch (error) {
-        console.log("axios error")
+        setError('Error ! please try again later')
       }
   }
   useEffect(()=>{
@@ -42,7 +43,7 @@ const countWords = (str) => {
     setSummary("");
 
     try {
-        const res = await axios.post("http://localhost:3000/summarize/summarizetext", 
+        const res = await axios.post("http://localhost:3000/api/summarize/summarizetext", 
           { usertext },
           { withCredentials: true }
         );
@@ -57,7 +58,7 @@ const countWords = (str) => {
    const logout= async(e)=>{
     e.preventDefault();
     try{
-      await axios.get('http://localhost:3000/user/logout',{
+      await axios.get('http://localhost:3000/api/user/logout',{
         withCredentials:true,
         headers:{ 
           'Accept':'application/json',
@@ -72,7 +73,7 @@ const countWords = (str) => {
       },1000);
     }
     catch(err){
-      console.log("Logout error:",err);
+setIslogin('error while logouting! please try again later');
     }
   }
 
@@ -156,6 +157,7 @@ const countWords = (str) => {
           
             <div className="card-body mt-19">
             <p className="text-red-400 text-xl font-bold d-flex justify-content-end">{islogin}</p>
+            <p className="text-center mb-4">{error}</p>
                <h1 className="text-center mb-4 text-primary">Text Summarizer</h1>
                <h6 className="text-center mb-4">By Suvidha Foundation</h6>
                 <div className="d-flex justify-content-end mb-3">

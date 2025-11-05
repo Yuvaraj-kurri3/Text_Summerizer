@@ -8,19 +8,19 @@ export default function History() {
   const [deleteres, setDeleteres] =useState('')
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [id, setId] = useState(""); // keep as string
+  const [id, setId] = useState("");  
 
   const fetchHistory = async () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        "http://localhost:3000/summarize/getsummarizationhistory",
+        "http://localhost:3000/api/summarize/getsummarizationhistory",
         { withCredentials: true }
       );
       setHistory(Array.isArray(response.data) ? response.data : []);
       setError(null);
     } catch (err) {
-      console.error("Error fetching history:", err);
+      // console.error("Error fetching history:", err);
       setError("Failed to load history. Please try again later.");
     } finally {
       setLoading(false);
@@ -28,41 +28,62 @@ export default function History() {
   };
 
   const fetchHistoryById = async () => {
-    if (!id) return; // no ID entered
-    setDeleteres(false);
-    try {
-      setLoading(true);
-      const response = await axios.get(
-        `http://localhost:3000/summarize/getsummarizationhistoryByid/${Number(id)}`,
-        { withCredentials: true }
-      );
-      console.error(response)
-      if(response.status===202){
-        setDeleteres(`Summary not Availble for Id: ${id}` );
-        fetchHistory();
+  // No ID entered
+  if (!id || isNaN(Number(id))) {
+    setError("Please enter a valid numeric ID.");
+    setByHistory([]);
+    return;
+  }
+
+  setDeleteres(false);
+  setLoading(true);
+  setError(null);
+
+  try {
+    const response = await axios.get(
+      `http://localhost:3000/api/summarize/getsummarizationhistoryByid/${Number(id)}`,
+      { withCredentials: true }
+    );
+
  
-      }
-       setByHistory(Array.isArray(response.data) ? response.data : [response.data]);
-      setError(null);
-    } catch (err) {
-      console.error("Error fetching history:", err);
-      setError("Failed to load history by ID. Please try again later.");
-    } finally {
-      setLoading(false);
+     if (response.status === 404 || response.data?.message?.includes("not found")) {
+      setDeleteres(`Summary not available for ID: ${id}`);
+      setByHistory([]);  
+      return;
     }
-  };
+
+     if (response.status === 200 && response.data) {
+      setByHistory(Array.isArray(response.data) ? response.data : [response.data]);
+      setDeleteres(false);
+    } else {
+      setDeleteres(`Summary not available for ID: ${id}`);
+      setByHistory([]);
+    }
+  } catch (err) {
+    if (err.response?.status === 404) {
+      setDeleteres(`No summary found for ID: ${id}`);
+      setByHistory([]);
+    } else {
+      setError("🚨 Failed to load summary. Please try again later.");
+    }
+  } finally {
+    setLoading(false);
+  }
+};
+
 
   const handleDelete = async (deleteId) => {
     try {
      let deleteres= await axios.delete(
-        `http://localhost:3000/summarize/clearsummarizationhistory/${deleteId}`,
+        `http://localhost:3000/api/summarize/clearsummarizationhistory/${deleteId}`,
         { withCredentials: true }
       );
       setDeleteres(deleteres.data.message);
-      fetchHistory();
+     await fetchHistory();
+     setByHistory([]);
+     setHistory();
     } catch (err) {
-      console.error("Error deleting item:", err);
-      setError("Failed to delete item. Please try again.");
+       setError("Failed to delete item. Please try again.");
     }
   };
 
@@ -169,7 +190,7 @@ export default function History() {
               {/* Full history list */}
               {!error && (
                 <div className="list-group">
-                  {history.length === 0 ? (
+                  {!history?.length ? (
                     <div className="text-center py-5">
                       <p className="text-muted mb-0">
                         No history available yet. Start summarizing texts to see them here!

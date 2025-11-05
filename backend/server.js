@@ -20,7 +20,7 @@ dotenv.config({ path: path.resolve(__dirname, '..', '.env') });
 const app = express();
 
  app.use(cors({
-    origin: 'http://localhost:5173',  
+    origin: ["http://localhost", "http://localhost:5173"], 
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
@@ -40,9 +40,9 @@ app.use(session({
  
 connectDB();
 
-app.use('/user',userroutes);
-app.use('/summarize',summarizedtextroutes);
-app.use('/middleware',middlewaresroute);
+app.use('/api/user',userroutes);
+app.use('/api/summarize',summarizedtextroutes);
+app.use('/api/middleware',middlewaresroute);
 app.get('/health',(req,res)=>{
     res.send('Welcome to Suvidha Foundation..');
 });
