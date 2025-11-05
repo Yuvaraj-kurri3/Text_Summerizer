@@ -39,12 +39,15 @@ export const login=async(req,res)=>{
         // 29-10-2025: Generating JWT token and setting it in HttpOnly cookie
         const token = jwt.sign({id:existingUser._id}, process.env.JWT_SECRET, {expiresIn:'10d'});
         
-        res.cookie('token', token, {
-                httpOnly: true,
-                secure: process.env.NODE_ENV === 'production',
-                sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
-                maxAge: 10 * 24 * 60 * 60 * 1000
-});
+       res.cookie('token', token, {
+            httpOnly: true,
+             secure: process.env.NODE_ENV === 'production',
+              sameSite: process.env.NODE_ENV === 'production' ? 'none' : 'lax',
+            domain: '.onrender.com',
+            path: '/',
+            maxAge: 10 * 24 * 60 * 60 * 1000 // 10 days
+     });
+
          
          res.status(200).json({
             message: "Login successfull",
