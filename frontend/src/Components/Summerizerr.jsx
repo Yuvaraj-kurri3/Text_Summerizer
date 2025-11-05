@@ -16,7 +16,7 @@ export default function Summarizer() {
  
    const handleTryNowClick = async(e)=> {
       try {
-        await axios.get('http://localhost:3000/api/middleware/loginornot', {
+        await axios.get('https://text-summerizer-vs2o.onrender.com/api/middleware/loginornot', {
         withCredentials: true})
         .then(()=>{})
         .catch((err)=>{window.location.href='/login'})
@@ -43,7 +43,7 @@ const countWords = (str) => {
     setSummary("");
 
     try {
-        const res = await axios.post("http://localhost:3000/api/summarize/summarizetext", 
+        const res = await axios.post("https://text-summerizer-vs2o.onrender.com/api/summarize/summarizetext", 
           { usertext },
           { withCredentials: true }
         );
@@ -58,7 +58,7 @@ const countWords = (str) => {
    const logout= async(e)=>{
     e.preventDefault();
     try{
-      await axios.get('http://localhost:3000/api/user/logout',{
+      await axios.get('https://text-summerizer-vs2o.onrender.com/api/user/logout',{
         withCredentials:true,
         headers:{ 
           'Accept':'application/json',

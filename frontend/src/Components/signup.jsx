@@ -43,7 +43,7 @@ const SignupPage = () => {
 
     // Simulate signup API call
      try{
-      let response = await axios.post('http://localhost:3000/api/user/signup',{
+      let response = await axios.post('https://text-summerizer-vs2o.onrender.com/api/user/signup',{
         name: form.name,
         email: form.email,
         password: form.password

@@ -14,7 +14,7 @@ export default function History() {
     try {
       setLoading(true);
       const response = await axios.get(
-        "http://localhost:3000/api/summarize/getsummarizationhistory",
+        "https://text-summerizer-vs2o.onrender.com/api/summarize/getsummarizationhistory",
         { withCredentials: true }
       );
       setHistory(Array.isArray(response.data) ? response.data : []);
@@ -41,7 +41,7 @@ export default function History() {
 
   try {
     const response = await axios.get(
-      `http://localhost:3000/api/summarize/getsummarizationhistoryByid/${Number(id)}`,
+      `https://text-summerizer-vs2o.onrender.com/api/summarize/getsummarizationhistoryByid/${Number(id)}`,
       { withCredentials: true }
     );
 
@@ -75,7 +75,7 @@ export default function History() {
   const handleDelete = async (deleteId) => {
     try {
      let deleteres= await axios.delete(
-        `http://localhost:3000/api/summarize/clearsummarizationhistory/${deleteId}`,
+        `https://text-summerizer-vs2o.onrender.com/api/summarize/clearsummarizationhistory/${deleteId}`,
         { withCredentials: true }
       );
       setDeleteres(deleteres.data.message);

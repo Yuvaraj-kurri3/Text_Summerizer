@@ -35,7 +35,7 @@ const LoginPage = () => {
 
     //  login API call
      try{
-      let response = await axios.post('http://localhost:3000/api/user/login',{
+      let response = await axios.post('https://text-summerizer-vs2o.onrender.com/api/user/login',{
         email: form.email,
         password: form.password
       }, { withCredentials: true });

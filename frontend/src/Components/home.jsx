@@ -24,7 +24,7 @@ const Summarizer = () => {
           return;
       }
       else{
-          const response = await axios.get('http://localhost:3000/api/middleware/loginornot', {
+          const response = await axios.get('https://text-summerizer-vs2o.onrender.com/api/middleware/loginornot', {
         withCredentials: true,
         headers: {
         Authorization: `Bearer ${token}`,
@@ -45,7 +45,7 @@ const Summarizer = () => {
    const logout= async(e)=>{
     e.preventDefault();
     try{
-      await axios.get('http://localhost:3000/api/user/logout',{
+      await axios.get('https://text-summerizer-vs2o.onrender.com/api/user/logout',{
         withCredentials:true,
         headers:{ 
           'Accept':'application/json',
