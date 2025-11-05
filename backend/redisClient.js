@@ -2,13 +2,13 @@ import { createClient } from "redis";
 import {config} from 'dotenv'
 
 config();
- const client = createClient({
+const client = createClient({
   url: process.env.redis_url,
-    socket: {
-    tls: true, // important for Upstash
+  socket: {
+    tls: true,
   },
+  disableReadyCheck: true, // ✅ This disables the 'INFO' check
 });
-
 client.on("connect", () => console.log("✅ Redis client connected"));
 client.on("error", (err) => console.error("❌ Redis Client Error:", err));
 
