@@ -20,7 +20,7 @@ dotenv.config({ path: path.resolve(__dirname, '..', '.env') });
 const app = express();
 
  app.use(cors({
-    origin: ["http://localhost", "http://localhost:5173"], 
+    origin: ["http://localhost", "http://localhost:5173","https://text-summerizer-iota.vercel.app"], 
     credentials: true,
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization']
