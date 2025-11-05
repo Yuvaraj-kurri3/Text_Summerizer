@@ -4,6 +4,9 @@ import {config} from 'dotenv'
 config();
  const client = createClient({
   url: process.env.redis_url,
+    socket: {
+    tls: true, // important for Upstash
+  },
 });
 
 client.on("connect", () => console.log("✅ Redis client connected"));
