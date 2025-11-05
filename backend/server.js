@@ -1,40 +1,50 @@
-const express= require('express');
-const cors= require('cors');
-const bodyParser= require('body-parser');  
-const axios = require('axios');
-const path = require('path');
-require('dotenv').config({ path: path.resolve(__dirname, '..', '.env') });
-const app=express();
+import express from 'express';
+import cors from 'cors';
+import bodyParser from 'body-parser';
+import axios from 'axios';
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+import connectDB from './config/db.js';
+import userroutes from './routes/userroute.js';
+import summarizedtextroutes from './routes/summerizedtextRoute.js';
+import middlewaresroute from './routes/middlewareroute.js';
+import dotenv from 'dotenv';
+import cookieParser from 'cookie-parser';
+import session from 'express-session';
+import { console } from 'inspector';
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
-app.use(cors());
+dotenv.config({ path: path.resolve(__dirname, '..', '.env') });
+const app = express();
+
+ app.use(cors({
+    origin: 'http://localhost:5173',  
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
+}));
+
+ app.use(cookieParser());  
 app.use(bodyParser.json());
+app.use(express.json());
+app.use(session({
+    secret: process.env.SESSION_SECRET || 'textsummarizersecret',
+    resave: false,
+    saveUninitialized: true,   
+    samesite: 'none',
 
+}))
 
-app.post("/summarize", async (req, res) => {
-  const { text } = req.body;
+ 
+connectDB();
 
-  try {
-    const response = await axios.post(
-      "https://api-inference.huggingface.co/models/facebook/bart-large-cnn",
-      { inputs: text },
-      {
-        headers: {
-           Authorization: `Bearer ${process.env.HuggingFaceApiKey}`, // Replace with your key
-
-        },
-      }
-    );
-     let summary = response.data[0].summary_text;
-    summary = summary.split(" ").slice(0, 200).join(" ");
-    res.json({ summary });
-  } catch (error) {
-    res.status(500).json({ error: "Summarization failed" });
-    console.error("Error during summarization:", error.message);
-  }
-});
-
-app.get('/',(req,res)=>{
-    res.send('Hello World!');
+app.use('/user',userroutes);
+app.use('/summarize',summarizedtextroutes);
+app.use('/middleware',middlewaresroute);
+app.get('/health',(req,res)=>{
+    res.send('Welcome to Suvidha Foundation..');
 });
 
 app.listen(3000,()=>{

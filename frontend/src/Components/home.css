@@ -1,54 +1,93 @@
-body {
-  background-color: #f8fafc;
-  font-family: Arial, sans-serif;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  height: 100vh;
-}
+   @keyframes slideUpFadeIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
 
-.container {
-  width: 80%;
-  max-width: 700px;
-  text-align: center;
-  background: white;
-  padding: 2rem;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-}
+  @keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
 
-textarea {
-  width: 100%;
-  height: 150px;
-  padding: 1rem;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-  resize: none;
-  outline: none;
-  margin-bottom: 1rem;
+  .fade-in-container {
+    opacity: 0;
+    transition: opacity 0.8s ease-out;
+  }
+  .fade-in-container.loaded {
+    opacity: 1;
+  }
+  
+   .hero-section-bg {
+    min-height: 100vh;
+    background: linear-gradient(-45deg, #15202B, #1C2D3D, #007bff, #15202B);
+    background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+    padding-top: 5rem; 
+  }
+.logo{
+  text-decoration: none;
 }
+   .animate-text-slide {
+    opacity: 0;
+    transform: translateY(20px);
+    animation: slideUpFadeIn 0.8s ease-out forwards;
+  }
 
-button {
-  background-color: #10b981;
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
+   .feature-card-hover {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+  }
+  .feature-card-hover:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.25) !important;  
+  }
+  
+   .custom-btn-hover {
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  .custom-btn-hover:hover {
+    background-color: rgb(10, 44, 217) !important; 
+    transform: translateY(-2px);
+  }
+.logout-btn-hover{
+border-radius: 50px;
 }
+   .logout-btn-hover:hover {
+    background-color: #ef4444 !important;  
+    border-color: #dc2626 !important; 
+    color: #fff !important;
+  }
+  
+   @keyframes fadeInOut {
+    0%, 100% { opacity: 0; }
+    5%, 90% { opacity: 1; }
+  }
 
-button:hover {
-  background-color: #059669;
-}
+  .nav-item a{
+    cursor: pointer;
+    text-decoration: none;
+   padding: 10px;
+  }
 
-.output {
-  margin-top: 1.5rem;
-  text-align: left;
-  background: #f1f5f9;
-  padding: 1rem;
-  border-radius: 10px;
-}
-.loading {
-  font-style: italic;
-  color: #6b7280;
-}
+  .nav-item a:hover{
+    cursor: pointer;
+    text-decoration: none;
+   padding: 10px;
+   color: white;
+  }
+  .d-login{
+    cursor: pointer;
+    text-decoration: none;
+   padding: 10px;
+  }
+  .d-login:hover{
+    background-color: rgb(17, 143, 17);
+  }
+  .try-now-btn{
+    border-radius: 50px;
+  }
+
+  .m-login-btn{
+    text-decoration: none;
+  }

@@ -1,0 +1,148 @@
+
+body {
+   min-height: 100vh;
+  padding-bottom: 50px;  
+    
+}
+/* .container{
+background: linear-gradient(-45deg, #15202B, #1C2D3D, #b2a20f, #15202B);
+          background-size: 400% 400%;
+    animation: gradientShift 15s ease infinite;
+}
+
+        @keyframes gradientShift {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        } */
+
+.card {
+  border: none;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1); /* Stronger shadow for a lifted look */
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+}
+
+/* Tab Navigation Styling */
+.nav-tabs {
+  border-bottom: 2px solid #dee2e6;
+}
+
+.nav-link {
+  color: #0d6efd;
+  font-weight: 600;
+  border: none;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  transition: all 0.3s;
+}
+
+.nav-link.active {
+  color: #fff;
+  background-color: #0d6efd;
+  border-color: #0d6efd;
+  box-shadow: 0 -2px 5px rgba(13, 110, 253, 0.3);
+}
+
+.nav-link:hover:not(.active) {
+  border-color: transparent;
+  background-color: #e9ecef;
+}
+
+
+textarea.form-control {
+  resize: vertical; /* Allow vertical resize */
+  font-size: 1rem;
+  border: 1px solid #dee2e6;
+  border-radius: 10px; /* Rounded corners for text area */
+  padding: 15px;
+  transition: border-color 0.2s ease-in-out, box-shadow 0.2s ease-in-out;
+}
+
+textarea.form-control:focus {
+  border-color: #0d6efd;
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25); /* More visible focus ring */
+}
+
+.btn-primary {
+  background-color: #0d6efd;
+  border: none;
+  transition: all 0.3s ease;
+  border-radius: 50px; /* Pill-shaped button */
+  font-weight: bold;
+}
+
+.btn-primary:hover:not(:disabled) {
+  background-color: #0b5ed7;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(13, 110, 253, 0.3);
+}
+
+.btn-success { /* Style for the Save Edited Summary button */
+  background-color: #198754;
+  border: none;
+  transition: all 0.3s ease;
+  border-radius: 50px;
+  font-weight: bold;
+}
+
+.btn-success:hover:not(:disabled) {
+  background-color: #157347;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(25, 135, 84, 0.3);
+}
+
+.output {
+  background-color: #e9f5ff !important; /* Lighter blue background for output */
+  border: 1px solid #0d6efd;
+  transition: all 0.3s ease;
+}
+
+.output:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+}
+
+.lead {
+  font-size: 1.1rem;
+  line-height: 1.8; /* Increased line-height for readability */
+  color: #212529; /* Darker text for better contrast */
+}
+
+footer {
+  font-size: 0.85rem;
+  padding-top: 20px;
+}
+
+/* History List Item Styling */
+.history-item {
+    border-left: 5px solid #0d6efd; /* Highlight for history item */
+    border-radius: 8px !important;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.history-item:hover {
+    transform: translateX(5px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    background-color: #f8f9fa !important;
+}
+
+.history-item .btn {
+    border-radius: 50px; /* Small pill buttons for actions */
+}
+
+.text-primary {
+    color: #0d6efd !important; /* Ensure primary color consistency */
+}
+
+.home-btn-hover:hover{
+  background-color: rgb(11, 201, 11);
+}
+.home-btn-hover{
+  border-radius: 50px;
+}
