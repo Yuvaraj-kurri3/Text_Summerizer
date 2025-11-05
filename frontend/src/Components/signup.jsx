@@ -47,7 +47,7 @@ const SignupPage = () => {
         name: form.name,
         email: form.email,
         password: form.password
-      });
+      } ,{ withCredentials: true });
       setLoading(false);
        if (response.data.message==="User registered successfully"){
         setMsg('Signup successful! please Login....');
