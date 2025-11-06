@@ -39,6 +39,7 @@ export const summmerizer= async(req,res)=>{
 
         res.json({ summary});
       } catch (error) {
+        console.log(error);
         res.status(500).json({ error: "Summarization failed" , err : error});
        }
 }
