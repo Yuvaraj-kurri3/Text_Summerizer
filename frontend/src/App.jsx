@@ -6,7 +6,7 @@ import Home from './Components/home.jsx'
 import LoginPage from './Components/login.jsx'
 import SignupPage from './Components/signup.jsx'
 import Summarizer from './Components/Summerizerr.jsx'
- function App() {
+function App() {
  
  
   return (

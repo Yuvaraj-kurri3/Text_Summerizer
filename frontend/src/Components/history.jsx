@@ -86,10 +86,15 @@ export default function History() {
 
 
   const handleDelete = async (deleteId) => {
+      const token= localStorage.getItem('token');
+      if(!token) return window.location.href='/login'
     try {
      let deleteres= await axios.delete(
         `${API_BASE_URL}/api/summarize/clearsummarizationhistory/${deleteId}`,
-        { withCredentials: true }
+        { withCredentials: true  ,
+         headers: {
+        Authorization: `Bearer ${token}`,
+        } }
       );
       setDeleteres(deleteres.data.message);
      await fetchHistory();

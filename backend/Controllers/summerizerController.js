@@ -106,7 +106,7 @@ export const summmerizer= async(req,res)=>{
 export const clearSummarizationHistory = async (req, res) => {
   try {
     const userId = req.user.id;
-    const summaryId = Number(req.params.id || req.query.id);
+     const summaryId = Number(req.params.id || req.query.id);
 
     if (summaryId) {
       const result = await summmerizerSchema.deleteOne({ id: summaryId, userid: userId });
