@@ -80,13 +80,13 @@ export const summmerizer= async(req,res)=>{
 
      const cachedData = await client.get(`summarybyid:${summaryId}-userid:${userId}`);
     if (cachedData) {
-      return res.status(200).json(JSON.parse(cachedData));
+      return res.status(200).json({summary:JSON.parse(cachedData),success:true} );
     }
 
      const summaryHistory = await summmerizerSchema.findOne({id: summaryId,userid: userId,});
 
     if (!summaryHistory) {
-      return res.status(404).json({ message: "Summary not found for this user" });
+      return res.status(200).json({ message: "Summary not found for this user",success:false  });
     }
 
     await client.set(`summarybyid:${summaryId}-userid:${userId}`,JSON.stringify(summaryHistory));
@@ -110,13 +110,13 @@ export const clearSummarizationHistory = async (req, res) => {
 
     if (summaryId) {
       const result = await summmerizerSchema.deleteOne({ id: summaryId, userid: userId });
-
+       
       // ✅ Clear specific Redis keys
-      await client.set(`summarybyid:${summaryId}-userid:${userId}`,'');
-      await client.set(`userid:${userId}`,'');
+      await client.del(`summarybyid:${summaryId}-userid:${userId}`);
+      await client.del(`userid:${userId}`,'');
 
       if (result.deletedCount === 0) {
-        return res.status(404).json({ message: "Summary not found or not authorized" });
+        return res.status(200).json({ message: "Summary not found or not authorized",success:false });
       }
 
       return res.status(200).json({ message: "Summary deleted successfully" });
@@ -124,7 +124,7 @@ export const clearSummarizationHistory = async (req, res) => {
 
     // ✅ Clear all user summaries
     await summmerizerSchema.deleteMany({ userid: userId });
-    await client.set(`userid:${userId}`,'');
+    await client.del(`userid:${userId}`);
 
     res.status(200).json({ message: "History cleared successfully" });
   } catch (err) {

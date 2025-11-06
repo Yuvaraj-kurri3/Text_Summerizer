@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './home.css';
+import api from '../utils/api.js'
 
 
 const Summarizer = () => {
@@ -22,25 +23,20 @@ const Summarizer = () => {
     e.preventDefault();
     const token = localStorage.getItem('token');
     try {
-      if(!token){
-        setIslogin('Please login to access the Text Summarizer.');
-          return;
-      }
-      else{
-          const response = await axios.get(`${API_BASE_URL}/api/middleware/loginornot`, {
-        withCredentials: true,
-        headers: {
-        Authorization: `Bearer ${token}`,
-        }
-      });
-       if (response.status === 200) {
-         window.location.href = '/summarizer';  
-       } else {
-          window.location.href = '/login';  
-      }
-      }
+      // if(!token){
+      //   setIslogin('Please login to access the Text Summarizer.');
+      //     return;
+      // }
     
-    } catch (error) {
+          const response = await api.get(`${API_BASE_URL}/api/middleware/loginornot`
+          );
+           if (response.status === 201) {
+             setIslogin('please login to access..');
+            } else {
+         window.location.href = '/summarizer';  
+      }
+    }
+    catch (error) {
       console.error(error)
         setIslogin('Authinticstion error');
      }
@@ -49,13 +45,7 @@ const Summarizer = () => {
    const logout= async(e)=>{
     e.preventDefault();
     try{
-      await axios.get(`${API_BASE_URL}/api/user/logout`,{
-        withCredentials:true,
-        headers:{ 
-          'Accept':'application/json',
-          'Content-Type':'application/json'
-        }
-      });
+      await api.get(`${API_BASE_URL}/api/user/logout`);
       localStorage.removeItem('token');
       setIslogout('Logout successful! Redirecting to home...');
       window.location.href='/'; 

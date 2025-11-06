@@ -6,10 +6,15 @@ const api = axios.create({
   withCredentials: true,
 });
 
+ const correlationId = window.crypto?.randomUUID?.() ||`${Date.now()}-${Math.random()}`;
+ console.log(correlationId);
 api.interceptors.request.use((config) => {
-  config.headers["x-correlation-id"] = crypto.lib.WordArray.random(16).toString();
+  const token = localStorage.getItem("token");
+  if (token) {
+    config.headers["Authorization"] = `Bearer ${token}`;
+  }
+  config.headers["x-correlation-id"] = correlationId;
+  config.withCredentials = true;
   return config;
 });
- 
-
 export default api;

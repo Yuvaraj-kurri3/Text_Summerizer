@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./history.css";
+import api from '../utils/api.js'
 export default function History() {
   const [history, setHistory] = useState([]);
   const [byHistory, setByHistory] = useState([]);
@@ -12,18 +13,11 @@ export default function History() {
 
 
   const fetchHistory = async () => {
-    const token=localStorage.getItem('token');
-    if(!token) return;
+    // const token=localStorage.getItem('token');
+    // if(!token) return;
     try {
       setLoading(true);
-       const response = await axios.get(`${API_BASE_URL}/api/summarize/getsummarizationhistory`, {
-        withCredentials: true,
-        headers: {
-        Authorization: `Bearer ${token}`,
-         }
-      });
-
-        
+       const response = await api.get(`${API_BASE_URL}/api/summarize/getsummarizationhistory`);
       setHistory(Array.isArray(response.data) ? response.data : []);
       setError(null);
     } catch (err) {
@@ -41,36 +35,30 @@ export default function History() {
     setByHistory([]);
     return;
   }
-  const token= localStorage.getItem('token');
-
+ 
   setDeleteres(false);
   setLoading(true);
   setError(null);
 
   try {
-    const response = await axios.get(
-      `${API_BASE_URL}/api/summarize/getsummarizationhistoryByid/${Number(id)}`,
-      { withCredentials: true ,
-         headers: {
-        Authorization: `Bearer ${token}`,
-         }
-      }
-    );
-
- 
-     if (response.status === 404 || response.data?.message?.includes("not found")) {
+    const response = await api.get(`${API_BASE_URL}/api/summarize/getsummarizationhistoryByid/${Number(id)}`);
+     if (!response.data.success) {
       setDeleteres(`Summary not available for ID: ${id}`);
       setByHistory([]);  
       return;
     }
+    else{
 
-     if (response.status === 200 && response.data) {
-      setByHistory(Array.isArray(response.data) ? response.data : [response.data]);
-      setDeleteres(false);
-    } else {
-      setDeleteres(`Summary not available for ID: ${id}`);
-      setByHistory([]);
+      if (response.status === 200 && response.data.summary) {
+       setByHistory(Array.isArray(response.data.summary) ? response.data.summary : [response.data.summary]);
+       setDeleteres(false);
+     } else {
+       setDeleteres(`Summary not available for ID: ${id}`);
+       setByHistory([]);
+     }
+
     }
+
   } catch (err) {
     if (err.response?.status === 404) {
       setDeleteres(`No summary found for ID: ${id}`);
@@ -85,20 +73,13 @@ export default function History() {
 
 
   const handleDelete = async (deleteId) => {
-      const token= localStorage.getItem('token');
-      if(!token) return window.location.href='/login'
     try {
-     let deleteres= await axios.delete(
-        `${API_BASE_URL}/api/summarize/clearsummarizationhistory/${deleteId}`,
-        { withCredentials: true  ,
-         headers: {
-        Authorization: `Bearer ${token}`,        } }
-      );
+     let deleteres= await api.delete(`${API_BASE_URL}/api/summarize/clearsummarizationhistory/${deleteId}`);
       setDeleteres(deleteres.data.message);
      await fetchHistory();
      setByHistory([]);
      setHistory();
-    } catch (err) {
+    } catch (err) { 
        setError("Failed to delete item. Please try again.");
     }
   };

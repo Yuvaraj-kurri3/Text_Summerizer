@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Mail, Lock, LogIn, UserPlus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
-import api from '../utils/api'
+import api from '../utils/api.js'
 import axios from 'axios';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -38,10 +38,10 @@ const LoginPage = () => {
 
     //  login API call
      try{
-      let response = await axios.post(`${API_BASE_URL}/api/user/login`,{
+      let response = await api.post(`${API_BASE_URL}/api/user/login`,{
         email: form.email,
         password: form.password
-      }, { withCredentials: true });
+      });
       setLoading(false);
       if (response.data.message==="Login successfull"){
         localStorage.setItem('token', response.data.user.token);
@@ -55,6 +55,7 @@ const LoginPage = () => {
     }
      }
      catch(err){
+      console.error(err)
         setError('Server error. Please try again later.');
          setLoading(false);
      }

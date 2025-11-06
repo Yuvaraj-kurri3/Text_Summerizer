@@ -10,7 +10,7 @@ function loginornot(req, res, next) {
     const authHeader = req.headers && req.headers.authorization;
     const token = (authHeader && authHeader.split(' ')[1]) || (req.cookies && req.cookies.token) ;
      if (!token) {
-      return res.status(401).json({ message: 'No token provided. Please log in first.' });
+      return res.status(201).json({ message: 'No token provided. Please log in first.' });
     }
 
     jwt.verify(token, process.env.JWT_SECRET || 'secret_key', (err, user) => {

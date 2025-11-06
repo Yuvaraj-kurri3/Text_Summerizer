@@ -19,21 +19,18 @@ export default function Summarizer() {
     sendRUM("page_load");
   }, []);
   const handleTryNowClick = async (e) => {
-  const token = localStorage.getItem('token');  
-  if (!token) return;
-
   try {
-    await axios.get(
-      `${API_BASE_URL}/api/middleware/loginornot`,
-      {
-        withCredentials: true,
-        headers: {
-          Authorization: `Bearer ${token}` ,
-         }
-      }
-    ).then(()=>{})
-    .catch(()=>{window.location.href='/login'})
-  } catch (err) {
+    let res=await api.get(`${API_BASE_URL}/api/middleware/loginornot`)
+    if(res.status==201) {
+      setIslogin('Please login to access..! redirecting to login')
+     setTimeout(() => {
+       return window.location.href='/login'
+     }, 2000);
+    } 
+    else{
+      setIslogin('Welcommee')
+    }
+   } catch (err) {
     setError('please try again later')
   }
 };
@@ -58,16 +55,7 @@ const countWords = (str) => {
     setSummary("");
 
     try {
-        const res = await axios.post(`${API_BASE_URL}/api/summarize/summarizetext`, 
-          { article },
-          { withCredentials: true,
-               headers: {
-          Authorization: `Bearer ${token}` ,
-           "x-correlation-id": crypto.randomUUID(),
-        }
-
-           }
-        );
+        const res = await api.post(`${API_BASE_URL}/api/summarize/summarizetext`, { article });
       setSummary(res.data.summary);
      
     } catch (err) {
@@ -79,22 +67,15 @@ const countWords = (str) => {
    const logout= async(e)=>{
     e.preventDefault();
     try{
-      await axios.get(`${API_BASE_URL}/api/user/logout`,{
-        withCredentials:true,
-        headers:{ 
-          'Accept':'application/json',
-          'Content-Type':'application/json'
-        }
-      });
+      await api.get(`${API_BASE_URL}/api/user/logout`);
       localStorage.removeItem('token');
       setIslogin('Logout successful! Redirecting to home...');
       setTimeout(()=>{
-
         window.location.href='/';  
       },1000);
     }
     catch(err){
-setIslogin('error while logouting! please try again later');
+    setIslogin('error while logouting! please try again later');
     }
   }
 
