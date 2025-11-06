@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './home.css';
- import {sendRUM }from '../rum'
- import api from '../utils/api'
 
 
 const Summarizer = () => {
@@ -10,7 +8,7 @@ const Summarizer = () => {
   const [islogout, setIslogout] = useState('');
   const [islogin, setIslogin] = useState('');
   const [isNavOpen, setIsNavOpen] = useState(false);  
-    const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 
   
@@ -18,8 +16,6 @@ const Summarizer = () => {
       document.body.classList.add('font-inter');
      const timer = setTimeout(() => setIsLoaded(true), 100);
     return () => clearTimeout(timer);
-    sendRUM("page_load");
- 
   }, []);
 
   const handleTryNowClick = async(e)=> {
@@ -31,11 +27,10 @@ const Summarizer = () => {
           return;
       }
       else{
-          const response = await axios.api(`${API_BASE_URL}/api/middleware/loginornot`, {
+          const response = await axios.get(`${API_BASE_URL}/api/middleware/loginornot`, {
         withCredentials: true,
         headers: {
         Authorization: `Bearer ${token}`,
-         "x-correlation-id": crypto.randomUUID(),
         }
       });
        if (response.status === 200) {
@@ -46,6 +41,7 @@ const Summarizer = () => {
       }
     
     } catch (error) {
+      console.error(error)
         setIslogin('Authinticstion error');
      }
   }
@@ -53,7 +49,7 @@ const Summarizer = () => {
    const logout= async(e)=>{
     e.preventDefault();
     try{
-      await axios.api(`${API_BASE_URL}/api/user/logout`,{
+      await axios.get(`${API_BASE_URL}/api/user/logout`,{
         withCredentials:true,
         headers:{ 
           'Accept':'application/json',

@@ -4,10 +4,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 function loginornot(req, res, next) {
-   
-  const start = Date.now();
 
-  console.log("🟠 [AUTH MIDDLEWARE START]", {requestId: req.requestId,});
   
   try {
     const authHeader = req.headers && req.headers.authorization;
@@ -21,11 +18,6 @@ function loginornot(req, res, next) {
         return res.status(403).json({ message: 'Invalid or expired token' });
       }
        req.user = user;
-           console.log("🟠 [AUTH MIDDLEWARE END]", {
-      requestId: req.requestId,
-      durationMs: Date.now() - start,
-      userId: user.id,
-    });
       next();
     });
   } catch (err) {

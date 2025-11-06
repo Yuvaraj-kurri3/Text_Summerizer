@@ -23,14 +23,13 @@ export default function Summarizer() {
   if (!token) return;
 
   try {
-    await axios.api(
+    await axios.get(
       `${API_BASE_URL}/api/middleware/loginornot`,
       {
         withCredentials: true,
         headers: {
           Authorization: `Bearer ${token}` ,
-           "x-correlation-id": crypto.randomUUID(),
-        }
+         }
       }
     ).then(()=>{})
     .catch(()=>{window.location.href='/login'})
@@ -59,7 +58,7 @@ const countWords = (str) => {
     setSummary("");
 
     try {
-        const res = await axios.api(`${API_BASE_URL}/api/summarize/summarizetext`, 
+        const res = await axios.post(`${API_BASE_URL}/api/summarize/summarizetext`, 
           { article },
           { withCredentials: true,
                headers: {
@@ -80,7 +79,7 @@ const countWords = (str) => {
    const logout= async(e)=>{
     e.preventDefault();
     try{
-      await axios.api(`${API_BASE_URL}/api/user/logout`,{
+      await axios.get(`${API_BASE_URL}/api/user/logout`,{
         withCredentials:true,
         headers:{ 
           'Accept':'application/json',

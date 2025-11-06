@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./history.css";
-import {sendRUM} from '../rum'
-import api from '../utils/api'
 export default function History() {
   const [history, setHistory] = useState([]);
   const [byHistory, setByHistory] = useState([]);
@@ -18,12 +16,11 @@ export default function History() {
     if(!token) return;
     try {
       setLoading(true);
-       const response = await axios.api(`${API_BASE_URL}/api/summarize/getsummarizationhistory`, {
+       const response = await axios.get(`${API_BASE_URL}/api/summarize/getsummarizationhistory`, {
         withCredentials: true,
         headers: {
         Authorization: `Bearer ${token}`,
-         "x-correlation-id": crypto.randomUUID(),
-        }
+         }
       });
 
         
@@ -51,13 +48,12 @@ export default function History() {
   setError(null);
 
   try {
-    const response = await axios.api(
+    const response = await axios.get(
       `${API_BASE_URL}/api/summarize/getsummarizationhistoryByid/${Number(id)}`,
       { withCredentials: true ,
          headers: {
         Authorization: `Bearer ${token}`,
-         "x-correlation-id": crypto.randomUUID(),
-        }
+         }
       }
     );
 
@@ -92,13 +88,11 @@ export default function History() {
       const token= localStorage.getItem('token');
       if(!token) return window.location.href='/login'
     try {
-     let deleteres= await axios.api(
+     let deleteres= await axios.delete(
         `${API_BASE_URL}/api/summarize/clearsummarizationhistory/${deleteId}`,
         { withCredentials: true  ,
          headers: {
-        Authorization: `Bearer ${token}`,
-         "x-correlation-id": crypto.randomUUID(),
-        } }
+        Authorization: `Bearer ${token}`,        } }
       );
       setDeleteres(deleteres.data.message);
      await fetchHistory();
@@ -111,8 +105,7 @@ export default function History() {
 
   useEffect(() => {
     fetchHistory();
-     sendRUM("page_load");
-   }, []);
+    }, []);
 
   if (loading) {
     return (

@@ -46,7 +46,7 @@ const SignupPage = () => {
 
     // Simulate signup API call
      try{
-      let response = await axios.api(`${API_BASE_URL}/api/user/signup`,{
+      let response = await axios.post(`${API_BASE_URL}/api/user/signup`,{
         name: form.name,
         email: form.email,
         password: form.password

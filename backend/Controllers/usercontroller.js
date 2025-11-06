@@ -60,6 +60,7 @@ export const login=async(req,res)=>{
         });
     }
     catch(err){
+        console.err(err)
         res.status(500).json({message:"Server error"});
 
     }
