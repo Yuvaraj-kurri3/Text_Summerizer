@@ -8,12 +8,10 @@ config();
 
 export const summmerizer= async(req,res)=>{
   const {article}=req.body;
-  console.log(article);
-         try {
+          try {
         const response = await axios.post(
           "https://router.huggingface.co/hf-inference/models/facebook/bart-large-cnn",
-          { inputs:  article
-            },
+          { inputs:  article},
           {
             headers: {
                Authorization: `Bearer ${process.env.HuggingFaceApiKey}`,  
@@ -28,7 +26,7 @@ export const summmerizer= async(req,res)=>{
          await client.set(`newsummaryID:${userid}`,JSON.stringify(summary));
 
          
-         const job = await summarizeQueue.add("summarizeJob", { summary, userid });
+        await summarizeQueue.add("summarizeJob", { summary, userid });
          
          const  count = await summmerizerSchema.countDocuments({ userid: userid });
         let newSummary = new summmerizerSchema({
