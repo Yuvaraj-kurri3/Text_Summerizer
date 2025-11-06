@@ -81,8 +81,8 @@ const Summarizer = () => {
     },
     {
       icon: 'bi-box-arrow-down',
-      title: 'Copy & Download',
-      description: 'Easily copy the summarized text to your clipboard or download it as a text file for offline use.',
+      title: 'Copy ',
+      description: 'Easily copy the summarized text to your clipboard.',
     },
   ];
   

@@ -6,7 +6,7 @@ dotenv.config();
 function loginornot(req, res, next) {
   try {
     const authHeader = req.headers && req.headers.authorization;
-    const token = (authHeader && authHeader.split(' ')[1]) || (req.cookies && req.cookies.token);
+    const token = (authHeader && authHeader.split(' ')[1]) || (req.cookies && req.cookies.token) ;
      if (!token) {
       return res.status(401).json({ message: 'No token provided. Please log in first.' });
     }

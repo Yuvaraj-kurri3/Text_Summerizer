@@ -49,6 +49,7 @@ export const summmerizer= async(req,res)=>{
 
   try {
       const userId = req.user && req.user.id;
+      console.log(userId)
     if (!userId) return res.status(401).json({ message: 'User not authenticated' });
        const  Redisfullhistroy= await client.get(`userid:${userId}`)
      
@@ -73,6 +74,7 @@ export const summmerizer= async(req,res)=>{
   try {
     const summaryId = req.params.id || req.query.id;
     const userId = req.user.id;
+    console.log(userId)
 
     if (!summaryId) {
       return res.status(400).json({ message: "Summary ID is required" });

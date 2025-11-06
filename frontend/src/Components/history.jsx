@@ -13,16 +13,22 @@ export default function History() {
 
 
   const fetchHistory = async () => {
+    const token=localStorage.getItem('token');
+    if(!token) return;
     try {
       setLoading(true);
-      const response = await axios.get(
-        `${API_BASE_URL}/api/summarize/getsummarizationhistory`,
-        { withCredentials: true }
-      );
+       const response = await axios.get(`${API_BASE_URL}/api/summarize/getsummarizationhistory`, {
+        withCredentials: true,
+        headers: {
+        Authorization: `Bearer ${token}`,
+        }
+      });
+
+        
       setHistory(Array.isArray(response.data) ? response.data : []);
       setError(null);
     } catch (err) {
-      // console.error("Error fetching history:", err);
+      console.error("Error fetching history:", err);
       setError("Failed to load history. Please try again later.");
     } finally {
       setLoading(false);
@@ -36,6 +42,7 @@ export default function History() {
     setByHistory([]);
     return;
   }
+  const token= localStorage.getItem('token');
 
   setDeleteres(false);
   setLoading(true);
@@ -44,7 +51,11 @@ export default function History() {
   try {
     const response = await axios.get(
       `${API_BASE_URL}/api/summarize/getsummarizationhistoryByid/${Number(id)}`,
-      { withCredentials: true }
+      { withCredentials: true ,
+         headers: {
+        Authorization: `Bearer ${token}`,
+        }
+      }
     );
 
  
