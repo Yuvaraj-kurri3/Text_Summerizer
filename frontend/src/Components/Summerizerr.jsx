@@ -42,6 +42,8 @@ const countWords = (str) => {
   };
 
   const handleSummarize = async () => {
+    const token=localStorage.getItem('token');
+    if(!token) return window.location.href='/login';
     if (!article.trim()) {
       alert("Please enter some text to summarize!");
       return;
@@ -54,7 +56,12 @@ const countWords = (str) => {
     try {
         const res = await axios.post(`${API_BASE_URL}/api/summarize/summarizetext`, 
           { article },
-          { withCredentials: true }
+          { withCredentials: true,
+               headers: {
+          Authorization: `Bearer ${token}` 
+        }
+
+           }
         );
       setSummary(res.data.summary);
      
