@@ -164,7 +164,7 @@ export default function History() {
                           : "No date available"}
                       </p>
                       <p>
-                        <strong>Original Text:</strong>{" "}
+                        <strong>Article:</strong>{" "}
                         {item?.article || "No text available"}
                       </p>
                       <p>
@@ -235,7 +235,7 @@ export default function History() {
                         </div>
                         <div className="summary-content">
                           <div className="original-text mb-2">
-                            <h6 className="mb-1">Original Text:</h6>
+                            <h6 className="mb-1"> Article:</h6>
                             <p className="text-muted small mb-2">
                               {item?.article
                                 ? `${item.article.substring(0, 200)}${
