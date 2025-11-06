@@ -39,7 +39,7 @@ export const summmerizer= async(req,res)=>{
 
         res.json({ summary});
       } catch (error) {
-        res.status(500).json({ error: "Summarization failed" });
+        res.status(500).json({ error: "Summarization failed" , err : error});
        }
 }
 
@@ -47,8 +47,7 @@ export const summmerizer= async(req,res)=>{
 
   try {
       const userId = req.user && req.user.id;
-      console.log(userId)
-    if (!userId) return res.status(401).json({ message: 'User not authenticated' });
+     if (!userId) return res.status(401).json({ message: 'User not authenticated' });
        const  Redisfullhistroy= await client.get(`userid:${userId}`)
      
 
