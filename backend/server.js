@@ -25,22 +25,35 @@ const allowedOrigins = [
   "https://text-summerizer-iota.vercel.app"
 ];
 
-const corsOptions = {
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+const corsOptions = (req, cb) => {
+  const origin = req.header("Origin");
+  const ok = !origin || allowedOrigins.includes(origin);
+  cb(null, {
+    origin: ok,
+    credentials: true,
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+  });
 };
 
+
 app.use(cors(corsOptions));
-app.options("/*", cors(corsOptions));
- app.use(cookieParser());  
+app.use((req, res, next) => {
+  if (req.method === "OPTIONS") {
+    const origin = req.header("Origin");
+    if (!origin || allowedOrigins.includes(origin)) {
+      res.header("Access-Control-Allow-Origin", origin || "*");
+      res.header("Vary", "Origin");
+      res.header("Access-Control-Allow-Credentials", "true");
+      res.header("Access-Control-Allow-Methods", "GET,POST,PUT,DELETE,OPTIONS");
+      res.header("Access-Control-Allow-Headers", "Content-Type, Authorization");
+      return res.sendStatus(204);
+    }
+    return res.sendStatus(403);
+  }
+  next();
+});
+  app.use(cookieParser());  
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(session({
