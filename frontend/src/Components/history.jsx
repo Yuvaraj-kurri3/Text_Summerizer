@@ -165,7 +165,7 @@ export default function History() {
                       </p>
                       <p>
                         <strong>Original Text:</strong>{" "}
-                        {item?.usertext || "No text available"}
+                        {item?.article || "No text available"}
                       </p>
                       <p>
                         <strong>Summary:</strong>{" "}
@@ -237,9 +237,9 @@ export default function History() {
                           <div className="original-text mb-2">
                             <h6 className="mb-1">Original Text:</h6>
                             <p className="text-muted small mb-2">
-                              {item?.usertext
-                                ? `${item.usertext.substring(0, 200)}${
-                                    item.usertext.length > 200 ? "..." : ""
+                              {item?.article
+                                ? `${item.article.substring(0, 200)}${
+                                    item.article.length > 200 ? "..." : ""
                                   }`
                                 : "No text available"}
                             </p>
