@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Mail, Lock, LogIn, UserPlus } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import api from '../utils/api'
 import axios from 'axios';
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 

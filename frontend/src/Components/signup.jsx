@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { Mail, Lock, LogIn, UserPlus,SignalHigh,BookUser } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import api from '../utils/api'
+
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 // The main component containing the responsive login form

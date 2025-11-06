@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./history.css";
-import sendRUM from '../rum'
-import {api} from '../utils/api'
+import {sendRUM} from '../rum'
+import api from '../utils/api'
 export default function History() {
   const [history, setHistory] = useState([]);
   const [byHistory, setByHistory] = useState([]);

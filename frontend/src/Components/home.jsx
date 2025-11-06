@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './home.css';
  import {sendRUM }from '../rum'
+ import api from '../utils/api'
+
 
 const Summarizer = () => {
   const [isLoaded, setIsLoaded] = useState(false);
