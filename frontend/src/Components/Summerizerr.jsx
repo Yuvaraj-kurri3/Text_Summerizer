@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./Summerizerr.css"
+import {sendRUM} from '../rum'
 import History from "./history.jsx";
 const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
@@ -13,18 +14,21 @@ export default function Summarizer() {
   const [islogin,setIslogin]=useState('');
   const [error,setError]=useState('')
   
- 
+  useEffect(() => {
+    sendRUM("page_load");
+  }, []);
   const handleTryNowClick = async (e) => {
   const token = localStorage.getItem('token');  
   if (!token) return;
 
   try {
-    await axios.get(
+    await axios.api(
       `${API_BASE_URL}/api/middleware/loginornot`,
       {
         withCredentials: true,
         headers: {
-          Authorization: `Bearer ${token}` 
+          Authorization: `Bearer ${token}` ,
+           "x-correlation-id": crypto.randomUUID(),
         }
       }
     ).then(()=>{})
@@ -54,11 +58,12 @@ const countWords = (str) => {
     setSummary("");
 
     try {
-        const res = await axios.post(`${API_BASE_URL}/api/summarize/summarizetext`, 
+        const res = await axios.api(`${API_BASE_URL}/api/summarize/summarizetext`, 
           { article },
           { withCredentials: true,
                headers: {
-          Authorization: `Bearer ${token}` 
+          Authorization: `Bearer ${token}` ,
+           "x-correlation-id": crypto.randomUUID(),
         }
 
            }
@@ -74,7 +79,7 @@ const countWords = (str) => {
    const logout= async(e)=>{
     e.preventDefault();
     try{
-      await axios.get(`${API_BASE_URL}/api/user/logout`,{
+      await axios.api(`${API_BASE_URL}/api/user/logout`,{
         withCredentials:true,
         headers:{ 
           'Accept':'application/json',

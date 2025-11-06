@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import './home.css';
- 
+ import {sendRUM }from '../rum'
+
 const Summarizer = () => {
   const [isLoaded, setIsLoaded] = useState(false);
   const [islogout, setIslogout] = useState('');
@@ -15,6 +16,8 @@ const Summarizer = () => {
       document.body.classList.add('font-inter');
      const timer = setTimeout(() => setIsLoaded(true), 100);
     return () => clearTimeout(timer);
+    sendRUM("page_load");
+ 
   }, []);
 
   const handleTryNowClick = async(e)=> {
@@ -26,10 +29,11 @@ const Summarizer = () => {
           return;
       }
       else{
-          const response = await axios.get(`${API_BASE_URL}/api/middleware/loginornot`, {
+          const response = await axios.api(`${API_BASE_URL}/api/middleware/loginornot`, {
         withCredentials: true,
         headers: {
         Authorization: `Bearer ${token}`,
+         "x-correlation-id": crypto.randomUUID(),
         }
       });
        if (response.status === 200) {
@@ -47,7 +51,7 @@ const Summarizer = () => {
    const logout= async(e)=>{
     e.preventDefault();
     try{
-      await axios.get(`${API_BASE_URL}/api/user/logout`,{
+      await axios.api(`${API_BASE_URL}/api/user/logout`,{
         withCredentials:true,
         headers:{ 
           'Accept':'application/json',

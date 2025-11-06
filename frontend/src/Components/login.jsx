@@ -37,7 +37,7 @@ const LoginPage = () => {
 
     //  login API call
      try{
-      let response = await axios.post(`${API_BASE_URL}/api/user/login`,{
+      let response = await axios.api(`${API_BASE_URL}/api/user/login`,{
         email: form.email,
         password: form.password
       }, { withCredentials: true });
