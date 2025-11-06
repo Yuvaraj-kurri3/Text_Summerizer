@@ -22,7 +22,7 @@ export const summmerizer= async(req,res)=>{
          let summary = response.data[0].summary_text;
          const userid=req.user.id;
         summary = summary.split(" ").slice(0, 200).join(" ");
-        await client.del(`userid:${userid}`)
+          await client.set(`userid:${userid}`, "");
          await client.set(`newsummaryID:${userid}`,JSON.stringify(summary));
 
          
@@ -112,8 +112,8 @@ export const clearSummarizationHistory = async (req, res) => {
       const result = await summmerizerSchema.deleteOne({ id: summaryId, userid: userId });
 
       // ✅ Clear specific Redis keys
-      await client.del(`summarybyid:${summaryId}-userid:${userId}`);
-      await client.del(`userid:${userId}`);
+      await client.set(`summarybyid:${summaryId}-userid:${userId}`,'');
+      await client.set(`userid:${userId}`,'');
 
       if (result.deletedCount === 0) {
         return res.status(404).json({ message: "Summary not found or not authorized" });
@@ -124,7 +124,7 @@ export const clearSummarizationHistory = async (req, res) => {
 
     // ✅ Clear all user summaries
     await summmerizerSchema.deleteMany({ userid: userId });
-    await client.del(`userid:${userId}`);
+    await client.set(`userid:${userId}`,'');
 
     res.status(200).json({ message: "History cleared successfully" });
   } catch (err) {
