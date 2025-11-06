@@ -9,8 +9,8 @@ const router=express.Router();
 
 router.post('/summarizetext', loginornot,summmerizer);
 router.get('/getsummarizationhistory', loginornot,getSummarizationHistory);
-router.get('/getsummarizationhistoryByid/:id',loginornot,getSummarizationHistoryByid)
-router.delete('/clearsummarizationhistory/:id', loginornot,clearSummarizationHistory);
+router.get('/getsummarizationhistoryByid/:id',getSummarizationHistoryByid)
+router.delete('/clearsummarizationhistory/:id',clearSummarizationHistory);
 router.get('/redisdata',getdatafromredis);
 
 export default router;
