@@ -34,7 +34,7 @@ export const login=async(req,res)=>{
         }
         const isPasswordCorrect= await bcrypt.compare(password,existingUser.password);
          if(!isPasswordCorrect){
-            return res.status(400).json({message:"Invalid credentials"});
+            return res.status(201).json({message:"Invalid credentials"});
         }
         // 29-10-2025: Generating JWT token and setting it in HttpOnly cookie
         const token = jwt.sign({id:existingUser._id}, process.env.JWT_SECRET, {expiresIn:'10d'});

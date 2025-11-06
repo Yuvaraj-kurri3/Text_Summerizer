@@ -11,7 +11,8 @@ export default function Summarizer() {
   const [summary, setSummary] = useState("");
   const [loading, setLoading] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
-  const [isNavOpen, setIsNavOpen] = useState(false); // State for mobile nav toggle
+  const [isNavOpen, setIsNavOpen] = useState(false); 
+  const [welcome,setWelcome]=useState('')
   const [islogin,setIslogin]=useState('');
   const [error,setError]=useState('')
   
@@ -28,7 +29,7 @@ export default function Summarizer() {
      }, 2000);
     } 
     else{
-      setIslogin('Welcommee')
+      setWelcome('Welcome to Text Summeraizer By Suvidha Foundation')
     }
    } catch (err) {
     setError('please try again later')
@@ -158,8 +159,11 @@ const countWords = (str) => {
         <div className="card shadow-lg">
           
             <div className="card-body mt-19">
-            <p className="text-red-400 text-xl font-bold d-flex justify-content-end">{islogin}</p>
-            <p className="text-center mb-4">{error}</p>
+             {error && <p className="text-center mb-7 text-danger font-bold">{error}</p>}
+            {islogin && <p className="text-center mb-7 text-danger font-bold">{islogin}</p>
+            }
+            {welcome && <p className="text-center mb-4 text-amber-600">{welcome}</p>
+            }
                <h1 className="text-center mb-4 text-primary">Text Summarizer</h1>
                <h6 className="text-center mb-4">By Suvidha Foundation</h6>
                 <div className="d-flex justify-content-end mb-3">

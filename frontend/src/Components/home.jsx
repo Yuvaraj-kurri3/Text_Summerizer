@@ -31,7 +31,7 @@ const Summarizer = () => {
           const response = await api.get(`${API_BASE_URL}/api/middleware/loginornot`
           );
            if (response.status === 201) {
-             setIslogin('please login to access..');
+             setIslogin('Please log in to your account to access.');
             } else {
          window.location.href = '/summarizer';  
       }

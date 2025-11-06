@@ -27,11 +27,12 @@ const LoginPage = () => {
    const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
+    setMsg('');
     setLoading(true);
 
     // Example validation
     if (!form.email || !form.password) {
-      setError('Please enter both username and password.');
+      setError('Please enter both mail and password.');
       setLoading(false);
       return;
     }
@@ -43,15 +44,15 @@ const LoginPage = () => {
         password: form.password
       });
       setLoading(false);
-      if (response.data.message==="Login successfull"){
+      if (response.data.message==='Login successfull'){
         localStorage.setItem('token', response.data.user.token);
-        setMsg('Login successful! Redirecting...');
+        setMsg(response.data.message);
         setTimeout(() => {
                   navigate('/');
         }, 2000);
       }
     else{
-        setError('Invalid username or password.');
+        setMsg('Invalid credentials');
     }
      }
      catch(err){
