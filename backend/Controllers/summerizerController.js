@@ -7,11 +7,12 @@ import { config } from 'dotenv';
 config();
 
 export const summmerizer= async(req,res)=>{
-  const {usertext}=req.body;
+  const {article}=req.body;
+  console.log(article);
          try {
         const response = await axios.post(
           "https://router.huggingface.co/hf-inference/models/facebook/bart-large-cnn",
-          { inputs:  usertext
+          { inputs:  article
             },
           {
             headers: {
@@ -31,7 +32,7 @@ export const summmerizer= async(req,res)=>{
          
          const  count = await summmerizerSchema.countDocuments({ userid: userid });
         let newSummary = new summmerizerSchema({
-            usertext: usertext,
+            article: article,
             summarizedText: summary,
             userid: req.user.id,
             id:count+1        

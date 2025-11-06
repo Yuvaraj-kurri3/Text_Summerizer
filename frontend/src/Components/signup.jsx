@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Mail, Lock, LogIn, UserPlus,SignalHigh,BookUser } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 // The main component containing the responsive login form
 const SignupPage = () => {
@@ -43,7 +44,7 @@ const SignupPage = () => {
 
     // Simulate signup API call
      try{
-      let response = await axios.post('https://text-summerizer-vs2o.onrender.com/api/user/signup',{
+      let response = await axios.post(`${API_BASE_URL}/api/user/signup`,{
         name: form.name,
         email: form.email,
         password: form.password

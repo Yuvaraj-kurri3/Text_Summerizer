@@ -1,26 +1,21 @@
 import { createClient } from "redis";
-import {config} from 'dotenv'
 
-config();
+const redisUrl = process.env.REDIS_URL || "redis://127.0.0.1:6379";
+
+// Detect if Upstash (production)
+const isUpstash = redisUrl.startsWith("rediss://");
+
 const client = createClient({
-  url: process.env.redis_url,
-  socket: {
-    tls: true,
-  },
-  disableReadyCheck: true, // ✅ This disables the 'INFO' check
+  url: redisUrl,
+  socket: isUpstash
+    ? { tls: true }   // ✅ Upstash requires TLS
+    : { tls: false }, // ✅ Local Redis MUST NOT use TLS
+  disableReadyCheck: true // ✅ Upstash blocks INFO command
 });
-client.on("connect", () => console.log("✅ Redis client connected"));
+
+client.on("connect", () => console.log("✅ Redis Connected"));
 client.on("error", (err) => console.error("❌ Redis Client Error:", err));
 
-async function connectRedis() {
-  try {
-    await client.connect();
-    console.log("🚀 Redis connection successful!");
-  } catch (error) {
-    console.error("❌ Redis connection failed:", error);
-  }
-}
-
-connectRedis();
+await client.connect();
 
 export default client;

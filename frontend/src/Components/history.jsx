@@ -9,12 +9,14 @@ export default function History() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [id, setId] = useState("");  
+  const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
+
 
   const fetchHistory = async () => {
     try {
       setLoading(true);
       const response = await axios.get(
-        "https://text-summerizer-vs2o.onrender.com/api/summarize/getsummarizationhistory",
+        `${API_BASE_URL}/api/summarize/getsummarizationhistory`,
         { withCredentials: true }
       );
       setHistory(Array.isArray(response.data) ? response.data : []);
@@ -41,7 +43,7 @@ export default function History() {
 
   try {
     const response = await axios.get(
-      `https://text-summerizer-vs2o.onrender.com/api/summarize/getsummarizationhistoryByid/${Number(id)}`,
+      `${API_BASE_URL}/api/summarize/getsummarizationhistoryByid/${Number(id)}`,
       { withCredentials: true }
     );
 
@@ -64,7 +66,7 @@ export default function History() {
       setDeleteres(`No summary found for ID: ${id}`);
       setByHistory([]);
     } else {
-      setError("🚨 Failed to load summary. Please try again later.");
+      setError("Failed to load summary. Please try again later.");
     }
   } finally {
     setLoading(false);
@@ -75,7 +77,7 @@ export default function History() {
   const handleDelete = async (deleteId) => {
     try {
      let deleteres= await axios.delete(
-        `https://text-summerizer-vs2o.onrender.com/api/summarize/clearsummarizationhistory/${deleteId}`,
+        `${API_BASE_URL}/api/summarize/clearsummarizationhistory/${deleteId}`,
         { withCredentials: true }
       );
       setDeleteres(deleteres.data.message);

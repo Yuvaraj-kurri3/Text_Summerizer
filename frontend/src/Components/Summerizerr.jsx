@@ -2,10 +2,10 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./Summerizerr.css"
 import History from "./history.jsx";
-import { use } from "react";
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL;
 
 export default function Summarizer() {
-  const [usertext, setusertext] = useState("");
+  const [article, setArticle] = useState("");
   const [summary, setSummary] = useState("");
   const [loading, setLoading] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
@@ -14,16 +14,25 @@ export default function Summarizer() {
   const [error,setError]=useState('')
   
  
-   const handleTryNowClick = async(e)=> {
-      try {
-        await axios.get('https://text-summerizer-vs2o.onrender.com/api/middleware/loginornot', {
-        withCredentials: true})
-        .then(()=>{})
-        .catch((err)=>{window.location.href='/login'})
-      } catch (error) {
-        setError('Error ! please try again later')
+  const handleTryNowClick = async (e) => {
+  const token = localStorage.getItem('token');  
+  if (!token) return;
+
+  try {
+    await axios.get(
+      `${API_BASE_URL}/api/middleware/loginornot`,
+      {
+        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}` 
+        }
       }
+    ).then(()=>{})
+    .catch(()=>{window.location.href='/login'})
+  } catch (err) {
+    setError('please try again later')
   }
+};
   useEffect(()=>{
     handleTryNowClick();
   },[]);
@@ -33,7 +42,7 @@ const countWords = (str) => {
   };
 
   const handleSummarize = async () => {
-    if (!usertext.trim()) {
+    if (!article.trim()) {
       alert("Please enter some text to summarize!");
       return;
     }
@@ -43,8 +52,8 @@ const countWords = (str) => {
     setSummary("");
 
     try {
-        const res = await axios.post("https://text-summerizer-vs2o.onrender.com/api/summarize/summarizetext", 
-          { usertext },
+        const res = await axios.post(`${API_BASE_URL}/api/summarize/summarizetext`, 
+          { article },
           { withCredentials: true }
         );
       setSummary(res.data.summary);
@@ -58,7 +67,7 @@ const countWords = (str) => {
    const logout= async(e)=>{
     e.preventDefault();
     try{
-      await axios.get('https://text-summerizer-vs2o.onrender.com/api/user/logout',{
+      await axios.get(`${API_BASE_URL}/api/user/logout`,{
         withCredentials:true,
         headers:{ 
           'Accept':'application/json',
@@ -78,7 +87,7 @@ setIslogin('error while logouting! please try again later');
   }
 
   const home=async(e)=>{
-      window.location.href='/'; // Assuming this redirects the user
+      window.location.href='/'; 
   }
 
 
@@ -171,12 +180,12 @@ setIslogin('error while logouting! please try again later');
                 <div className="form-group mb-4">
                 <textarea
                   className="form-control"
-                  placeholder="Paste your text here..."
-                  value={usertext}
-                  onChange={(e) => setusertext(e.target.value)}
+                  placeholder="Paste your Article here..."
+                  value={article}
+                  onChange={(e) => setArticle(e.target.value)}
                   rows="6"
                 />
-                  <p className="text-muted">Word count: <b>{countWords(usertext)}</b></p>
+                  <p className="text-muted">Word count: <b>{countWords(article)}</b></p>
               </div>
               <div className="text-center mb-4">
                 <button 

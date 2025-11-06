@@ -4,7 +4,7 @@ import mongoose from 'mongoose';
 
 // const AutoIncrement = AutoIncrementFactory(mongoose.connection);
 const summary_text=new mongoose.Schema({
-    usertext:{
+    article:{
         type:String,
         required:true
     },
@@ -26,5 +26,4 @@ const summary_text=new mongoose.Schema({
     }
 })
 
-// summary_text.plugin(AutoIncrement, { inc_field: "id" });
-export default mongoose.model('Summerized_text',summary_text);
+ export default mongoose.model('Summerized_text',summary_text);
