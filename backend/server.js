@@ -19,13 +19,27 @@ const __dirname = dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, '..', '.env') });
 const app = express();
 
- app.use(cors({
-    origin: ["http://localhost", "http://localhost:5173","https://text-summerizer-iota.vercel.app"], 
-    credentials: true,
-    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization']
-}));
+const allowedOrigins = [
+  "http://localhost",
+  "http://localhost:5173",
+  "https://text-summerizer-iota.vercel.app"
+];
 
+const corsOptions = {
+  origin: function (origin, callback) {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error("Not allowed by CORS"));
+    }
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+app.use(cors(corsOptions));
+app.options("*", cors(corsOptions));
  app.use(cookieParser());  
 app.use(bodyParser.json());
 app.use(express.json());
